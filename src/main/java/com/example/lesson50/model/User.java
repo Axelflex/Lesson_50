@@ -1,10 +1,13 @@
 package com.example.lesson50.model;
 
+import lombok.Data;
+
+@Data
 public class User {
-    String nickName;
-    String email;
-    String password;
-    int publication;
-    int followers;
-    int subscriptions;
+    private String nickName;
+    private String email;
+    private String password;
+    private int publications;
+    private int followers;
+    private int subscriptions;
 }

@@ -1,7 +1,10 @@
 package com.example.lesson50.model;
 
+import lombok.Data;
+
+@Data
 public class Follow {
-    User subscriber;
-    User ownerOfProfile;
-    String dateOfFollow;
+    private User subscriber;
+    private User ownerOfProfile;
+    private String dateOfFollow;
 }

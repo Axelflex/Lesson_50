@@ -1,9 +1,11 @@
 package com.example.lesson50.model;
 
-import java.util.Date;
+import lombok.Data;
 
+import java.util.Date;
+@Data
 public class Publication {
-    String photo;
-    String Description;
-    String datetimeOfPublication;
+    private String photo;
+    private String Description;
+    private String datetimeOfPublication;
 }

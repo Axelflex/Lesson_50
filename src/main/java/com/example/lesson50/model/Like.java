@@ -1,7 +1,10 @@
 package com.example.lesson50.model;
 
+import lombok.Data;
+
+@Data
 public class Like {
-    User user;
-    Publication publication;
-    String datetimeOfLike;
+    private User user;
+    private Publication publication;
+    private String datetimeOfLike;
 }
