@@ -1,6 +1,7 @@
 package com.example.lesson50.controller;
 
 import com.example.lesson50.model.Customer;
+import com.example.lesson50.model.Publication;
 import com.example.lesson50.model.User;
 import com.example.lesson50.service.DataBaseConnectivityService;
 import com.example.lesson50.service.DataBaseService;
@@ -65,6 +66,10 @@ public class DataBaseController {
     @PostMapping("/isUserExist")
     public ResponseEntity<Boolean> isUserExist(@RequestParam String email){
         return new ResponseEntity<>(dbService.isExist(email), HttpStatus.OK);
+    }
+    @GetMapping("/AllPubs")
+    public ResponseEntity<List<Publication>> isUserExist(){
+        return new ResponseEntity<>(dbService.getAllPubs(), HttpStatus.OK);
     }
 
 

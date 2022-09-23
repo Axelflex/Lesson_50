@@ -1,8 +1,10 @@
 package com.example.lesson50.service;
 
 import com.example.lesson50.dao.CustomerDAO;
+import com.example.lesson50.dao.PublicationDAO;
 import com.example.lesson50.dao.UserDAO;
 import com.example.lesson50.model.Customer;
+import com.example.lesson50.model.Publication;
 import com.example.lesson50.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ public class DataBaseService {
     private final DataBaseConnectivityService dbService;
     private final CustomerDAO customerDAO;
     private final UserDAO userDAO;
+    private final PublicationDAO publicationDAO;
 
     private int executeUpdate(String query) throws SQLException{
         Statement statement = dbService.getConnection().createStatement();
@@ -41,17 +44,95 @@ public class DataBaseService {
                 "datetimeOfPublication VARCHAR(100) NOT NULL, " +
                 "CONSTRAINT fk_user_id " +
                 "FOREIGN KEY(user_id) " +
-                "REFERENCES users(id))";
+                "REFERENCES users(id)); " +
+
+                "CREATE TABLE IF NOT EXISTS likes( " +
+                "id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY PRIMARY KEY, " +
+                "user_id INTEGER NOT NULL, " +
+                "publication_id INTEGER NOT NULL, " +
+                "datetimeOfLike VARCHAR(100) NOT NULL, " +
+                "CONSTRAINT fk_user_id " +
+                "FOREIGN KEY(user_id) " +
+                "REFERENCES users(id), " +
+                "CONSTRAINT fk_publication_id " +
+                "FOREIGN KEY(publication_id) " +
+                "REFERENCES publications(id)); " +
+
+                "CREATE TABLE IF NOT EXISTS followers( " +
+                "id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY PRIMARY KEY, " +
+                "subscriber_id INTEGER NOT NULL, " +
+                "ownerOfProfile_id INTEGER NOT NULL, " +
+                "datetimeOfFollow VARCHAR(100) NOT NULL, " +
+                "CONSTRAINT fk_subscriber_id " +
+                "FOREIGN KEY(subscriber_id) " +
+                "REFERENCES users(id), " +
+                "CONSTRAINT fk_ownerOfProfile_id " +
+                "FOREIGN KEY(ownerOfProfile_id) " +
+                "REFERENCES users(id)); " +
+
+                "CREATE TABLE IF NOT EXISTS comments( " +
+                "id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY PRIMARY KEY, " +
+                "user_id INTEGER NOT NULL, " +
+                "publication_id INTEGER NOT NULL, " +
+                "commentText VARCHAR(250) NOT NULL, " +
+                "datetimeOfComment VARCHAR(100) NOT NULL, " +
+                "CONSTRAINT fk_user_id " +
+                "FOREIGN KEY(user_id) " +
+                "REFERENCES users(id), " +
+                "CONSTRAINT fk_publication_id " +
+                "FOREIGN KEY(publication_id) " +
+                "REFERENCES publications(id)) ";
+
         String insertQuery = "INSERT INTO publications(user_id, photo, datetimeOfPublication) " +
                 "VALUES(1, '/photo.jpeg', '13.02.2021'); " +
-                "INSERT INTO users(nickname, name, email, password) " +
-                "VALUES('BrianZ', 'Brian', 'BZran@gamil.com', '12345qwerty'); " +
-                "INSERT INTO users(nickname, name, email, password) " +
-                "VALUES('Axel', 'Max', 'MaxFlex@gamil.com', 'qwerty'); " +
-                "INSERT INTO users(nickname, name, email, password) " +
-                "VALUES('Lizzer', 'John', 'JoLiz@gamil.com', 'qwertyJo'); " +
-                "INSERT INTO users(nickname, name, email, password) " +
-                "VALUES('BGm', 'Mishel', 'Mishel@gamil.com', 'qwerty13'); ";
+                "INSERT INTO publications(user_id, photo, datetimeOfPublication) " +
+                "VALUES(1, '/photo1.jpeg', '13.02.2022'); " +
+                "INSERT INTO publications(user_id, photo, datetimeOfPublication) " +
+                "VALUES(1, '/photo2.jpeg', '01.09.2022'); " +
+                "INSERT INTO publications(user_id, photo, datetimeOfPublication) " +
+                "VALUES(3, '/photo3.jpeg', '23.11.2021'); " +
+                "INSERT INTO publications(user_id, photo, datetimeOfPublication) " +
+                "VALUES(2, '/photo3.jpeg', '24.03.2021'); " +
+                "INSERT INTO publications(user_id, photo, datetimeOfPublication) " +
+                "VALUES(2, '/photo3.jpeg', '12.05.2021'); " +
+
+                "INSERT INTO comments(user_id, publication_id, commentText, datetimeOfComment) " +
+                "VALUES(1, 2, 'Hello World', '11.02.2021'); " +
+                "INSERT INTO Comments(user_id, publication_id, commentText,datetimeOfComment) " +
+                "VALUES(2, 1, 'Hello World2', '11.02.2021'); " +
+                "INSERT INTO Comments(user_id, publication_id, commentText,datetimeOfComment) " +
+                "VALUES(2, 3, 'Hello', '11.02.2021'); " +
+                "INSERT INTO Comments(user_id, publication_id, commentText,datetimeOfComment) " +
+                "VALUES(4, 2, 'Hello World', '11.02.2021'); " +
+                "INSERT INTO Comments(user_id, publication_id, commentText,datetimeOfComment) " +
+                "VALUES(4, 2, 'World Hello', '11.02.2021'); " +
+
+                "INSERT INTO followers(subscriber_id, ownerOfProfile_id, datetimeOfFollow) " +
+                "VALUES(1, 2, '11.02.2021'); " +
+                "INSERT INTO Followers(subscriber_id, ownerOfProfile_id, datetimeOfFollow) " +
+                "VALUES(3, 2, '11.02.2021'); " +
+                "INSERT INTO Followers(subscriber_id, ownerOfProfile_id, datetimeOfFollow) " +
+                "VALUES(4, 2, '11.02.2021'); " +
+                "INSERT INTO Followers(subscriber_id, ownerOfProfile_id, datetimeOfFollow) " +
+                "VALUES(2, 3, '11.02.2021'); " +
+
+                "INSERT INTO likes(user_id, publication_id, datetimeOfLike) " +
+                "VALUES(1, 1, '13.02.2021'); " +
+                "INSERT INTO likes(user_id, publication_id, datetimeOfLike) " +
+                "VALUES(2, 2, '13.02.2021'); " +
+                "INSERT INTO likes(user_id, publication_id, datetimeOfLike) " +
+                "VALUES(2, 2, '13.02.2021'); " +
+                "INSERT INTO likes(user_id, publication_id, datetimeOfLike) " +
+                "VALUES(3, 4, '13.02.2021'); ";
+
+//                "INSERT INTO users(nickname, name, email, password) " +
+//                "VALUES('BrianZ', 'Brian', 'BZran@gamil.com', '12345qwerty'); " +
+//                "INSERT INTO users(nickname, name, email, password) " +
+//                "VALUES('Axel', 'Max', 'MaxFlex@gamil.com', 'qwerty'); " +
+//                "INSERT INTO users(nickname, name, email, password) " +
+//                "VALUES('Lizzer', 'John', 'JoLiz@gamil.com', 'qwertyJo'); " +
+//                "INSERT INTO users(nickname, name, email, password) " +
+//                "VALUES('BGm', 'Mishel', 'Mishel@gamil.com', 'qwerty13'); ";
         executeUpdate(createTableQuery);
         executeUpdate(insertQuery);
     }
@@ -115,6 +196,8 @@ public class DataBaseService {
         }
     }
 
+
+
     public List<Customer> getCustomers(){
          return customerDAO.getAllCustomers();
     }
@@ -129,5 +212,9 @@ public class DataBaseService {
     }
     public Boolean isExist(String email){
         return userDAO.isUserExist(email);
+    }
+
+    public List<Publication> getAllPubs(){
+        return publicationDAO.getAllPub();
     }
 }

@@ -16,7 +16,7 @@ public class UserDAO {
     private final JdbcTemplate jdbcTemplate;
 
     public Boolean isUserExist(String email){
-        String query = String.format("select * from users" +
+        String query = String.format("select * from users " +
                 "where email = '%s'", email);
         List<User> user = jdbcTemplate.query(query, new BeanPropertyRowMapper<>(User.class));
         return user.size() != 0;

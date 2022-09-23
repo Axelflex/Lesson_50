@@ -11,7 +11,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Publication {
-    private User owner;
+    private User user;
     private String photo;
     private String Description;
     private String datetimeOfPublication;
