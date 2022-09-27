@@ -19,12 +19,19 @@ public class PublicationDAO {
         return jdbcTemplate.query(query, new BeanPropertyRowMapper<>(Publication.class));
     }
     public List<Publication> getAllPubsOfFollowers(){
-        //шаг первый получить список всех id подписчиков
-        //шаг воторой выбрать все публикации у которых owner_id в списке подписчиков полученных в 1 шаге
-
-        //выполнение данного метода не представляется возможным, так как мы не прошли OneToMany и дургие типи связий
-        //в java spring
-        String query = "select * from publications";
+        String query = "select * from publications p " +
+                "inner join followers f on p.user_id = f.subscriber_id " +
+                "where p.user_id = ?";
         return jdbcTemplate.query(query, new BeanPropertyRowMapper<>(Publication.class));
+    }
+    public void createPub(){
+        String query = "INSERT INTO publications(user_id, photo, datetimeOfPublication)" +
+                "VALUES(?, ?, ?);";
+        jdbcTemplate.update(query);
+    }
+    public void deletePub(){
+        String query = "delete from publications " +
+                "where user_id = ?";
+        jdbcTemplate.update(query);
     }
 }

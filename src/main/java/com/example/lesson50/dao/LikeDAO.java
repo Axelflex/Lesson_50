@@ -12,15 +12,26 @@ import java.util.List;
 public class LikeDAO {
 
     private final JdbcTemplate jdbcTemplate;
+    private final UserDAO userDAO;
 
-    public Boolean isLikeExist(User user){
-        //шаг первый нужно получить user_id
-        //шаг воторой полчить publications_id
-        //выполнить проверку на то что они не null и если true значит лайк есть, если false то лайка нет
-        //под постом от конкрнетного юзера
-
-        //выполнение данного метода не представляется возможным, так как мы не прошли OneToMany и дургие типи связий
-        //в java spring
-        return null;
+    public Boolean isLikeExist(){
+        if(userDAO.isUserExist()){
+            String query = "select * from users u " +
+                    "inner join likes l on u.id = l.user_id " +
+                    "where email = ?";
+            List<User> user = jdbcTemplate.query(query, new BeanPropertyRowMapper<>(User.class));
+            return user.size() != 0;
+        }
+        return false;
+    }
+    public void putLike(){
+        String query = "INSERT INTO likes(user_id, publication_id, datetimeOfLike) " +
+                "VALUES(?, ?, ?); ";
+        jdbcTemplate.update(query);
+    }
+    public void removeLike(){
+        String query = "delete from likes " +
+                "where user_id = ?";
+        jdbcTemplate.update(query);
     }
 }

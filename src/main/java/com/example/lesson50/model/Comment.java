@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Comment {
-    private User owner;
-    private Publication publication;
+    private Integer owner_id;
+    private Integer publication_id;
     private String commentText;
     private String datetimeOfComment;
 }

@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Like {
-    private User owner;
-    private Publication publication;
+    private Integer user_id;
+    private Integer publication_id;
     private String datetimeOfLike;
 }

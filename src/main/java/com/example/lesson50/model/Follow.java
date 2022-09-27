@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Follow {
-    private User subscriber;
-    private User ownerOfProfile;
+    private Integer subscriber_id;
+    private Integer ownerOfProfile_id;
     private String dateOfFollow;
 }
