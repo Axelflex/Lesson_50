@@ -11,14 +11,14 @@ import java.util.List;
 public class CommentDAO {
     private final JdbcTemplate jdbcTemplate;
 
-    public void addComment(){
+    public void addComment(Integer user_id, Integer publication_id, String commentText, String datetime){
         String query = "INSERT INTO comments(user_id, publication_id, commentText, datetimeOfComment) " +
                 "VALUES(?, ?, ?, ?); ";
-        jdbcTemplate.update(query);
+        jdbcTemplate.update(query, user_id, publication_id, commentText, datetime);
     }
-    public void deleteComment(){
+    public void deleteComment(Integer user_id){
         String query = "delete from comments " +
                 "where user_id = ?";
-        jdbcTemplate.update(query);
+        jdbcTemplate.update(query, user_id);
     }
 }

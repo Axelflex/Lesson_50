@@ -9,14 +9,14 @@ import org.springframework.stereotype.Component;
 public class FollowDAO {
     private final JdbcTemplate jdbcTemplate;
 
-    public void subscribe(){
+    public void subscribe(Integer subscriber_id, Integer ownerOfProfile_id, String datetime){
         String query = "INSERT INTO followers(subscriber_id, ownerOfProfile_id, datetimeOfFollow) " +
                 "VALUES(?, ?, ?);";
-        jdbcTemplate.update(query);
+        jdbcTemplate.update(query, subscriber_id, ownerOfProfile_id, datetime);
     }
-    public void unsubscribe(){
+    public void unsubscribe(Integer subscriber_id){
         String query = "delete from followers " +
                 "where subscriber_id = ?";
-        jdbcTemplate.update(query);
+        jdbcTemplate.update(query, subscriber_id);
     }
 }

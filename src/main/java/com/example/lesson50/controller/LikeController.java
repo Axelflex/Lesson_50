@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -16,15 +17,17 @@ public class LikeController {
 
     private final LikeDAO likeDAO;
     @GetMapping("/isLikeExist")
-    public ResponseEntity<Boolean> isLikeExist(){
-        return new ResponseEntity<>(likeDAO.isLikeExist(), HttpStatus.OK);
+    public ResponseEntity<Boolean> isLikeExist(@RequestParam String email){
+        return new ResponseEntity<>(likeDAO.isLikeExist(email), HttpStatus.OK);
     }
     @PostMapping("/deleteLike")
-    public void deleteLike(){
-        likeDAO.removeLike();
+    public void deleteLike(@RequestParam Integer user_id){
+        likeDAO.removeLike(user_id);
     }
     @PostMapping("/putLike")
-    public void putLike(){
-        likeDAO.putLike();
+    public void putLike(@RequestParam Integer user_id,
+                        @RequestParam Integer publication_id,
+                        @RequestParam String datetime){
+        likeDAO.putLike(user_id, publication_id, datetime);
     }
 }

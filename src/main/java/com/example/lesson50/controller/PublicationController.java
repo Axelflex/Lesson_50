@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -22,15 +23,15 @@ public class PublicationController {
         return new ResponseEntity<>(publicationDAO.getAllPub(), HttpStatus.OK);
     }
     @GetMapping("/allPubsSubscribed")
-    public ResponseEntity<List<Publication>> getAllSubscribedPubs(){
-        return new ResponseEntity<>(publicationDAO.getAllPubsOfFollowers(), HttpStatus.OK);
+    public ResponseEntity<List<Publication>> getAllSubscribedPubs(@RequestParam Integer user_id){
+        return new ResponseEntity<>(publicationDAO.getAllPubsOfFollowers(user_id), HttpStatus.OK);
     }
     @PostMapping("/deletePub")
-    public void deletePub(){
-        publicationDAO.deletePub();
+    public void deletePub(@RequestParam Integer user_id){
+        publicationDAO.deletePub(user_id);
     }
     @PostMapping("/createPub")
-    public void createPub(){
-        publicationDAO.createPub();
+    public void createPub(@RequestParam Integer user_id, @RequestParam String photo, @RequestParam String datetime){
+        publicationDAO.createPub(user_id, photo, datetime);
     }
 }

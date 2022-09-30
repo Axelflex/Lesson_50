@@ -22,24 +22,27 @@ public class UserController {
         return new ResponseEntity<>(userDAO.getAllUsers(), HttpStatus.OK);
     }
     @PostMapping("/userByName")
-    public ResponseEntity<List<User>> userByName(){
-        return new ResponseEntity<>(userDAO.getUserByName(), HttpStatus.OK);
+    public ResponseEntity<List<User>> userByName(@RequestParam String name){
+        return new ResponseEntity<>(userDAO.getUserByName(name), HttpStatus.OK);
     }
     @PostMapping("/userByNickname")
-    public ResponseEntity<List<User>> userByNickname(){
-        return new ResponseEntity<>(userDAO.getUserByNickname(), HttpStatus.OK);
+    public ResponseEntity<List<User>> userByNickname(@RequestParam String nickname){
+        return new ResponseEntity<>(userDAO.getUserByNickname(nickname), HttpStatus.OK);
     }
     @PostMapping("/userByEmail")
-    public ResponseEntity<List<User>> userByEmail(){
-        return new ResponseEntity<>(userDAO.getUserByEmail(), HttpStatus.OK);
+    public ResponseEntity<List<User>> userByEmail(@RequestParam String email){
+        return new ResponseEntity<>(userDAO.getUserByEmail(email), HttpStatus.OK);
     }
     @PostMapping("/isUserExist")
-    public ResponseEntity<Boolean> isUserExist(){
-        return new ResponseEntity<>(userDAO.isUserExist(), HttpStatus.OK);
+    public ResponseEntity<Boolean> isUserExist(@RequestParam String email){
+        return new ResponseEntity<>(userDAO.isUserExist(email), HttpStatus.OK);
     }
     @PostMapping("/addUser")
-    public void addUser(){
-        userDAO.addUser();
+    public void addUser(@RequestParam String nickname,
+                        @RequestParam String name,
+                        @RequestParam String email,
+                        @RequestParam String password){
+        userDAO.addUser(nickname, name, email, password);
     }
     @PostMapping("/deleteAll")
     public void deleteAll(){

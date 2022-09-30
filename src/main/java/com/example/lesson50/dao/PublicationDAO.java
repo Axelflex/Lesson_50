@@ -18,20 +18,20 @@ public class PublicationDAO {
         String query = "select * from publications";
         return jdbcTemplate.query(query, new BeanPropertyRowMapper<>(Publication.class));
     }
-    public List<Publication> getAllPubsOfFollowers(){
+    public List<Publication> getAllPubsOfFollowers(Integer user_id){
         String query = "select * from publications p " +
                 "inner join followers f on p.user_id = f.subscriber_id " +
                 "where p.user_id = ?";
-        return jdbcTemplate.query(query, new BeanPropertyRowMapper<>(Publication.class));
+        return jdbcTemplate.query(query, new BeanPropertyRowMapper<>(Publication.class), user_id);
     }
-    public void createPub(){
+    public void createPub(Integer user_id, String photo, String datetime){
         String query = "INSERT INTO publications(user_id, photo, datetimeOfPublication)" +
                 "VALUES(?, ?, ?);";
-        jdbcTemplate.update(query);
+        jdbcTemplate.update(query, user_id, photo, datetime);
     }
-    public void deletePub(){
+    public void deletePub(Integer user_id){
         String query = "delete from publications " +
                 "where user_id = ?";
-        jdbcTemplate.update(query);
+        jdbcTemplate.update(query, user_id);
     }
 }
