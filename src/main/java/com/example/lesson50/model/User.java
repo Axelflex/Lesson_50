@@ -16,6 +16,7 @@ public class User {
     private String name;
     private String email;
     private String password;
+    private boolean enabled;
     private List<Publication> publications;
     private Integer publicationsCount;
     private Integer followers;

@@ -34,4 +34,8 @@ public class LikeDAO {
                 "where user_id = ?";
         jdbcTemplate.update(query, user_id);
     }
+    public void deleteAll() {
+        String query = "delete from likes";
+        jdbcTemplate.update(query);
+    }
 }

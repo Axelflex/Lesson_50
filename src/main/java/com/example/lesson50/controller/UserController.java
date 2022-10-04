@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
+
 @RestController("/users")
 @RequiredArgsConstructor
 public class UserController {
@@ -30,7 +32,7 @@ public class UserController {
         return new ResponseEntity<>(userDAO.getUserByNickname(nickname), HttpStatus.OK);
     }
     @PostMapping("/userByEmail")
-    public ResponseEntity<List<User>> userByEmail(@RequestParam String email){
+    public ResponseEntity<Optional<User>> userByEmail(@RequestParam String email){
         return new ResponseEntity<>(userDAO.getUserByEmail(email), HttpStatus.OK);
     }
     @PostMapping("/isUserExist")
@@ -38,11 +40,11 @@ public class UserController {
         return new ResponseEntity<>(userDAO.isUserExist(email), HttpStatus.OK);
     }
     @PostMapping("/addUser")
-    public void addUser(@RequestParam String nickname,
+    public ResponseEntity<?> addUser(@RequestParam String nickname,
                         @RequestParam String name,
                         @RequestParam String email,
                         @RequestParam String password){
-        userDAO.addUser(nickname, name, email, password);
+        return new ResponseEntity<>(userDAO.addUser(nickname, name, email, password), HttpStatus.OK);
     }
     @PostMapping("/deleteAll")
     public void deleteAll(){

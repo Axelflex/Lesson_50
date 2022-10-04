@@ -19,4 +19,8 @@ public class FollowDAO {
                 "where subscriber_id = ?";
         jdbcTemplate.update(query, subscriber_id);
     }
+    public void deleteAll() {
+        String query = "delete from followers";
+        jdbcTemplate.update(query);
+    }
 }

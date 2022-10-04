@@ -52,4 +52,13 @@ public class SubscribeEventDAO {
     public void deleteSub(Long id){
 
     }
+
+    public void deleteAll() {
+        String sql = "delete from subscriber_event";
+        jdbcTemplate.update(sql);
+    }
+    public Optional<SubscribeEvent> getAllSubscriptions(){
+        String sql = "select * from subscriber_event";
+        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(SubscribeEvent.class)));
+    }
 }

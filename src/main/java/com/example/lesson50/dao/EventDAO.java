@@ -58,5 +58,9 @@ public class EventDAO {
                 "and e.id = s.event_id;";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Event.class), email);
     }
+    public void deleteAll() {
+        String sql = "delete from event";
+        jdbcTemplate.update(sql);
+    }
 
 }
