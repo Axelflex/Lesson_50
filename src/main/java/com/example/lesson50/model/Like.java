@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -12,5 +14,5 @@ import lombok.NoArgsConstructor;
 public class Like {
     private Integer user_id;
     private Integer publication_id;
-    private String datetimeOfLike;
+    private LocalDateTime datetimeOfLike;
 }

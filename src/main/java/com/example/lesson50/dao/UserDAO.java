@@ -20,8 +20,8 @@ public class UserDAO {
     private final JdbcTemplate jdbcTemplate;
 
     public ResponseEntity<?> addUser(String nickname, String name, String email, String password){
-        String query = "INSERT INTO users(nickname, name, email, password) " +
-               "VALUES(?, ?, ?, ?) ";
+        String query = "INSERT INTO users(nickname, name, email, password, enabled) " +
+               "VALUES(?, ?, ?, ?, true) ";
         return new ResponseEntity<>(jdbcTemplate.update(query, nickname, name, email, password), HttpStatus.OK);
     }
     public void deleteAll() {
@@ -61,6 +61,4 @@ public class UserDAO {
                 "values (?, ?, ?, ?, true);";
         jdbcTemplate.update(sql, user.getEmail(), user.getName(), user.getPassword(), user.getNickname());
     }
-
-
 }

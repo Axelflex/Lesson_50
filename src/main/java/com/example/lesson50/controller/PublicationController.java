@@ -6,15 +6,13 @@ import com.example.lesson50.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController("/publications")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class PublicationController {
 
     private final PublicationDAO publicationDAO;

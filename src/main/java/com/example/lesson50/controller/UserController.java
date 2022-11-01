@@ -5,16 +5,15 @@ import com.example.lesson50.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.lang.invoke.StringConcatException;
 import java.util.List;
 import java.util.Optional;
 
 @RestController("/users")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class UserController {
 
     private final UserDAO userDAO;
@@ -40,11 +39,8 @@ public class UserController {
         return new ResponseEntity<>(userDAO.isUserExist(email), HttpStatus.OK);
     }
     @PostMapping("/addUser")
-    public ResponseEntity<?> addUser(@RequestParam String nickname,
-                        @RequestParam String name,
-                        @RequestParam String email,
-                        @RequestParam String password){
-        return new ResponseEntity<>(userDAO.addUser(nickname, name, email, password), HttpStatus.OK);
+    public ResponseEntity<?> addUser(@RequestBody User body){
+        return new ResponseEntity<>(userDAO.addUser(body.getNickname(), body.getName(), body.getEmail(), body.getPassword()), HttpStatus.OK);
     }
     @PostMapping("/deleteAll")
     public void deleteAll(){

@@ -5,13 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Comment {
-    private Integer owner_id;
+    private Integer user_id;
     private Integer publication_id;
     private String commentText;
-    private String datetimeOfComment;
+    private LocalDateTime datetimeOfComment;
 }

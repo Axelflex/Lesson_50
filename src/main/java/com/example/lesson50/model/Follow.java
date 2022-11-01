@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -12,5 +14,5 @@ import lombok.NoArgsConstructor;
 public class Follow {
     private Integer subscriber_id;
     private Integer ownerOfProfile_id;
-    private String dateOfFollow;
+    private LocalDateTime dateOfFollow;
 }

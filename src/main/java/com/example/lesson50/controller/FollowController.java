@@ -2,12 +2,14 @@ package com.example.lesson50.controller;
 
 import com.example.lesson50.dao.FollowDAO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController("/followers")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class FollowController {
     private final FollowDAO followDAO;
 
