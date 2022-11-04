@@ -6,11 +6,21 @@ const splash = document.getElementById("splash")
 const loginForm = document.getElementById('login-form');
 const mark = document.getElementById('mark');
 const postContainer = document.getElementsByClassName('post-container')[0];
+const navbarData = document.getElementsByClassName('navbarData')[0];
 //const BASE_URL = "https://techcrunch.com/wp-json/wp/v2/posts?per_page=100&context=embed";
 const BASE_URL = "http://localhost:8080/"
 const IMG = "../img/img.png"
+const storage = localStorage;
 
 const posts = [];
+
+// const options = {
+//   mode: 'cors',
+//   headers: {
+//     'Content-Type': 'application/json',
+//     'Authorization': 'Basic ' + btoa(user.name + ':' + user.password)
+//   }
+// };
 
 const user = {
   userId: 1,
@@ -45,6 +55,16 @@ const NUM_OF_POSTS = 20;
 
 
 // DECLARE FUNCTIONS
+
+async function _getUserEmail() {
+  const url = BASE_URL + "userByEmail?email=admin@test";
+  const response = await axios.get(url);
+  if (response.status !== 200) {
+    throw new Error(response.status);
+  }
+  return response.data.nickname;
+}
+
 const changeAuthor = () => {
   user.isAuthorized = true;
 };
@@ -87,12 +107,28 @@ const createPosts = () => {
     });
   }
 };
+async function renderComs() {
+  
+  const users = await _getAllUsers();
+  const pubs = await _getAllPubs();
+  renderPosts(pubs, users)
+}
 
 async function renderPubs() {
   const users = await _getAllUsers();
   const pubs = await _getAllPubs();
   renderPosts(pubs, users)
 }
+
+// async function _createComment() {
+//   const url = BASE_URL + "addComment";
+//   const response = await axios.post(url);
+//   if (response.status !== 200) {
+//     throw new Error(response.status);
+//   }
+//   return response.data;
+// }
+
 async function _getAllUsers() {
   const url = BASE_URL + "allUsers";
   const response = await axios.get(url);
@@ -118,62 +154,62 @@ async function _getAllPubs() {
   return response.data;
 }
 
-function postHandler(event) {
-  event.preventDefault()
-  const form = event.target;
-  const data = new FormData(form);
-  console.log(event)
-  let object = {};
-  data.forEach((value, key) => {
-    object[key] = value;
-  });
-  let json = JSON.stringify(object);
-  console.log(json)
-
-  send(json);
-}
-
 
 function loginHandler(event) {
   event.preventDefault()
   const form = event.target;
   const data = new FormData(form);
+  const email = document.getElementById('loginEmail')
+  const password = document.getElementById('loginPassword')
   let object = {};
   data.forEach((value, key) => {
     object[key] = value;
   });
   let json = JSON.stringify(object);
-  console.log(json)
 
-  //send(json);
+  let dataUser = send(json, email.value);
+  console.log(dataUser)
+
+  storage.setItem(email.name, email.value)
+  storage.setItem(password.name, password.value)
+
+  console.log(storage)
+  renderUsername();
 }
 
-function send(json) {
-  axios.post(BASE_URL + '/user?ID=12345',
+
+function send(json, email) {
+  axios.get(BASE_URL + 'isUserExist?email=' + email,
       json, {
         headers: {
           "Content-Type": "application/json"
         }
       })
     .then((response) => {
-      //console.log(response);
+      return response.data
     })
     .catch((error) => {
       console.log(error);
     })
 }
+async function renderUsername() {
+  const nickname = await _getUserEmail();
+  navbarData.innerHTML = ''
+  let template = '';
+  template += `<span>${nickname}</span> <a href="#">logout</a>`
+  navbarData.insertAdjacentHTML('beforeend', template);
+}
 function getCommentUser(userId, users) {
   const result = users.filter((user) => user.id === userId);
-  console.log(result)
   return result[0]
 }
+
 function renderComments(comments, users) {
   let template = '';
   comments.forEach((c) => {
     let user = getCommentUser(c.user_id, users)
-    template += `<a>${user.nickname}</a><p>${c.commentText}</p>`
+    template += `<a href="#" class="nickname">${user.nickname}</a><p class="comment">${c.commentText}</p>`
   })
-  console.log(template)
   return template
 }
 const renderPosts = (posts, users) => {
@@ -182,26 +218,32 @@ const renderPosts = (posts, users) => {
     const comments = await _getAllComments(post.id);
     // 1. Create a template string for post objects
     const postTemplateString = ` 
-        <div class="post card mb-3" style="width: 40rem;">
-            <img class="post-image card-img-top" src="${post.photo}" alt="...">
-            <span class="h1 mx-2 text-danger imgHeart">
-                <i class="bi bi-heart-fill"></i>
-            </span>
-            <div class="card-body d-flex">
-                <span class="h1 mx-2 text-danger">
-                    <i class="like bi bi-heart"></i>
-                </span>
-
-                <span class="h1 mx-2" data-bs-toggle="modal" data-bs-target="#commentModal${post.id}">
-                    <i class="bi bi-chat"></i>
-                </span>
-
-                <span class="h1 mx-2 ms-auto ">
-                    <i class="bi bi-bookmark"></i>
-                </span>
-            </div>
-            <div>${renderComments(comments, users)}</div>
-        </div>`;
+    <div class="post card mb-3" style="width: 40rem;">
+      <img class="post-image card-img-top" src="${post.photo}" alt="...">
+      <span class="h1 mx-2 text-danger imgHeart">
+        <i class="bi bi-heart-fill"></i>
+      </span>
+      <div class="post-body">
+        <div class = "card-body d-flex">
+          <span class = "h1 mx-2 text-danger" >
+            <i class = "like bi bi-heart"> </i> 
+          </span>
+          <span class = "h1 mx-2" data-bs-toggle = "modal" data-bs-target = "#commentModal${post.id}">
+            <i class = "bi bi-chat"></i>
+          </span>
+          <span class = "h1 mx-2 ms-auto">
+            <i class = "bi bi-bookmark"></i>
+          </span> 
+        </div>
+        <div class="comment-body">
+          <div class="post-description"> ${post.description} </div>
+          <p class = "comment-header">Comments:</p>
+          <div class="comments">
+            ${renderComments(comments, users)} 
+          </div>
+        </div>
+      </div>
+    </div>`;
 
     const modalTemplateString = `
         <div class="modal fade" id="commentModal${post.id}" tabindex="-1" aria-labelledby="commentModalLabel${post.id}" aria-hidden="true">
@@ -230,25 +272,44 @@ const renderPosts = (posts, users) => {
   });
 };
 
+function postAddHandler(event) {
+  event.preventDefault()
+  let valid = false;
+  var currentdate = new Date();
+  var datetime = "Last Sync: " + currentdate.getDate() + "/" +
+    (currentdate.getMonth() + 1) + "/" +
+    currentdate.getFullYear() + " @ " +
+    currentdate.getHours() + ":" +
+    currentdate.getMinutes() + ":" +
+    currentdate.getSeconds();
+  const data = {
+    description: addPostForm.description.value,
+    photo: regForm.photo.value,
+    datetime: datetime
+  }
+  console.log(data)
+
+  if (data.password === data.password2) valid = true;
+
+  if (valid) {
+    const url = BASE_URL + 'addUser';
+    const json = JSON.stringify(data)
+    axios.post(url, data, {
+        'content-type': 'application/json',
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          window.location.replace('index.html')
+        }
+      })
+
+  } else {
+    alert('passwords do not match')
+  }
+}
 const addPost = (e) => {
   e.preventDefault();
 
-  // get form data
-  let form = new FormData(addPostForm);
-
-  posts.push({
-    postId: posts.length + 1,
-    userId: user.userId,
-    identity: user.email,
-    name: 'post name',
-    photo: '../img/img.png',
-    description: 'lorem',
-    likes: posts.length + 1,
-    likeState: false,
-    timeOfCreation: new Date(),
-  });
-
-  renderPosts();
 };
 
 

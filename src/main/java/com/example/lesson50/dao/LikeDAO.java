@@ -15,13 +15,13 @@ public class LikeDAO {
     private final UserDAO userDAO;
 
     public Boolean isLikeExist(String email){
-        if(userDAO.isUserExist(email)){
-            String query = "select * from users u " +
-                    "inner join likes l on u.id = l.user_id " +
-                    "where email = ?";
-            List<User> user = jdbcTemplate.query(query, new BeanPropertyRowMapper<>(User.class), email);
-            return user.size() != 0;
-        }
+//        if(userDAO.isUserExist(email)){
+//            String query = "select * from users u " +
+//                    "inner join likes l on u.id = l.user_id " +
+//                    "where email = ?";
+//            List<User> user = jdbcTemplate.query(query, new BeanPropertyRowMapper<>(User.class), email);
+//            return user.size() != 0;
+//        }
         return false;
     }
     public void putLike(Integer user_id, Integer publication_id, String datetime){

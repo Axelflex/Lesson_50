@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController("/")
+@RestController("/data")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class DataBaseController {

@@ -41,16 +41,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/subscriptions/**")
-                .fullyAuthenticated();
+                .hasRole("USER");
         http.authorizeRequests()
                 .antMatchers("/comments/**")
-                .fullyAuthenticated();
+                .hasRole("USER");
         http.authorizeRequests()
                 .antMatchers("/followers/**")
                 .fullyAuthenticated();
         http.authorizeRequests()
                 .antMatchers("/publications/allPubsSubscribed")
-                .fullyAuthenticated();
+                .hasRole("USER");
         http.authorizeRequests()
                 .antMatchers("/publications/deletePub")
                 .fullyAuthenticated();
